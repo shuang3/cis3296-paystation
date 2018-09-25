@@ -11,6 +11,8 @@
  */
 package paystation.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -137,5 +139,91 @@ public class PayStationImplTest {
         ps.addPayment(25);
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());
+    }
+
+    //Lab3: new tests being added
+    //total of 8 new tests added
+    
+    @Test //call to empty returns the total amount entered
+    public void emptyReturnsTotal() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.addPayment(10);
+        ps.buy();
+        ps.addPayment(10);
+        ps.buy();
+        assertEquals("Should return the total amount entered", 25, ps.empty());
+    }
+
+    @Test //canceled entry does not add to the amount returned by empty.
+    public void cancelEntryNotAdded() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.addPayment(10);
+        ps.buy();
+        ps.addPayment(10);
+        ps.cancel();
+        assertEquals("Should return total amount after cancel", 15, ps.empty());
+    }
+
+    @Test //call to empty resets the total to zero.
+    public void emptyResetsTotalToZero() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.empty();
+        assertEquals("Should reset total to 0", 0, ps.empty());
+    }
+
+    @Test //call to cancel returns a map containing one coin entered.
+    public void cancelReturnsOneCoin() throws IllegalCoinException {
+        ps.addPayment(5);
+        Map m = ps.cancel();
+        assertEquals("Should return a nickel", 1, m.get(5));
+        //ps.addPayment(10);
+        //m = ps.cancel();
+        //assertEquals("Should return a dime", 1, m.get(10));
+        //ps.addPayment(25);
+        //m = ps.cancel();
+        //assertEquals("Should return a quarter", 1, m.get(25));
+    }
+
+    @Test //call to cancel returns a map containing a mixture of coins entered.
+    public void cancelReturnsMixCoins() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.addPayment(10);;
+        ps.addPayment(25);
+        Map m = ps.cancel();
+        assertEquals("Should return a nickel", 1, m.get(5));
+        assertEquals("Should return a dime", 1, m.get(10));
+        assertEquals("Should return a quarter", 1, m.get(25));
+    }
+
+    @Test //call to cancel returns a map that does not contain a key for a coin not entered.
+    public void cancelReturnsOnlyCoinsEntered() throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.addPayment(25);
+        ps.addPayment(25);
+        Map m = ps.cancel();
+        assertEquals("Should return a dime", 1, m.get(10));
+        assertEquals("Should return two quarters", 2, m.get(25));
+        //assertEquals("Should return a empty map", true, m.isEmpty());
+    }
+
+    @Test //call to cancel clears the map.
+    public void cancelClearsMap() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.cancel();
+        Map m = ps.cancel();
+        Map e = new HashMap<>();
+        assertEquals("Cancel should clear map", e, m);
+        //assertEquals("Cancel should clear map", 0, m.size());
+    }
+
+    @Test //call to buy clears map
+    public void buyClearsMap() throws IllegalCoinException {
+        ps.addPayment(5);
+        ps.buy();
+        Map m = ps.cancel();
+        Map e = new HashMap<>();
+        assertEquals("Buy should clear map", e, m);
+        //assertEquals("Buy should clear map", 0, m.size());
+
     }
 }

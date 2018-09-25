@@ -1,15 +1,16 @@
 package paystation.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Implementation of the pay station.
  *
  * Responsibilities:
  *
- * 1) Accept payment; 
- * 2) Calculate parking time based on payment; 
- * 3) Know earning, parking time bought; 
- * 4) Issue receipts; 
- * 5) Handle buy and cancel events.
+ * 1) Accept payment; 2) Calculate parking time based on payment; 3) Know
+ * earning, parking time bought; 4) Issue receipts; 5) Handle buy and cancel
+ * events.
  *
  * This source code is from the book "Flexible, Reliable Software: Using
  * Patterns and Agile Development" published 2010 by CRC Press. Author: Henrik B
@@ -20,17 +21,21 @@ package paystation.domain;
  * purposes. For any commercial use, see http://www.baerbak.com/
  */
 public class PayStationImpl implements PayStation {
-    
+
     private int insertedSoFar;
     private int timeBought;
+    private int totalMoney;
 
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
         switch (coinValue) {
-            case 5: break;
-            case 10: break;
-            case 25: break;
+            case 5:
+                break;
+            case 10:
+                break;
+            case 25:
+                break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
@@ -46,16 +51,47 @@ public class PayStationImpl implements PayStation {
     @Override
     public Receipt buy() {
         Receipt r = new ReceiptImpl(timeBought);
+        totalMoney += insertedSoFar;
         reset();
         return r;
     }
 
     @Override
-    public void cancel() {
+    //public void cancel() {
+    public Map<Integer, Integer> cancel() {
+        Map<Integer, Integer> coinReturn = new HashMap<>();
+        int quarters = 0, dimes = 0, nickels = 0;
+
+        while (insertedSoFar >= 25) {
+            quarters++;
+            coinReturn.put(25, quarters);
+            insertedSoFar -= 25;
+        }
+        while (insertedSoFar >= 10) {
+            dimes++;
+            coinReturn.put(10, dimes);
+            insertedSoFar -= 10;
+        }
+        while (insertedSoFar >= 5) {
+            nickels++;
+            coinReturn.put(5, nickels);
+            insertedSoFar -= 5;
+        }
+
         reset();
+        return coinReturn;
     }
-    
+
     private void reset() {
         timeBought = insertedSoFar = 0;
+    }
+
+    @Override
+    public int empty() {
+        //int inserted = insertedSoFar;
+        //return inserted;
+        int total = totalMoney;
+        totalMoney = 0;
+        return total;
     }
 }
