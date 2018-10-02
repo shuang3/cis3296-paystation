@@ -166,9 +166,10 @@ public class PayStationImplTest {
 
     @Test //call to empty resets the total to zero.
     public void emptyResetsTotalToZero() throws IllegalCoinException {
-        ps.addPayment(5);
-        ps.empty();
-        assertEquals("Should reset total to 0", 0, ps.empty());
+        ps.addPayment(25);
+        ps.buy();
+        assertEquals("Should return total amount entered", 25, ps.empty());
+        assertEquals("Should now reset total to 0", 0, ps.empty());
     }
 
     @Test //call to cancel returns a map containing one coin entered.
@@ -186,13 +187,18 @@ public class PayStationImplTest {
 
     @Test //call to cancel returns a map containing a mixture of coins entered.
     public void cancelReturnsMixCoins() throws IllegalCoinException {
-        ps.addPayment(5);
-        ps.addPayment(10);;
         ps.addPayment(25);
+        ps.addPayment(5);
+        ps.addPayment(10);
+        ps.addPayment(5);
+        ps.addPayment(10);
+        ps.addPayment(10);
+        ps.addPayment(5);
+        ps.addPayment(5);
         Map m = ps.cancel();
-        assertEquals("Should return a nickel", 1, m.get(5));
-        assertEquals("Should return a dime", 1, m.get(10));
-        assertEquals("Should return a quarter", 1, m.get(25));
+        assertEquals("Should return nickel", 4, m.get(5));
+        assertEquals("Should return dime", 3, m.get(10));
+        assertEquals("Should return quarter", 1, m.get(25));
     }
 
     @Test //call to cancel returns a map that does not contain a key for a coin not entered.

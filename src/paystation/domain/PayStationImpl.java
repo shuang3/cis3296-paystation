@@ -26,6 +26,8 @@ public class PayStationImpl implements PayStation {
     private int timeBought;
     private int totalMoney;
 
+    private HashMap map = new HashMap();
+
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
@@ -39,6 +41,14 @@ public class PayStationImpl implements PayStation {
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
+
+        int c = coinValue;
+        int n = 1;
+        if (map.containsKey(c)) {
+            n = (Integer) map.get(c);
+            n++;
+        }
+        map.put(c, n);
         insertedSoFar += coinValue;
         timeBought = insertedSoFar / 5 * 2;
     }
@@ -59,6 +69,10 @@ public class PayStationImpl implements PayStation {
     @Override
     //public void cancel() {
     public Map<Integer, Integer> cancel() {
+        HashMap coinReturn = (HashMap) map.clone();
+        coinReturn.putAll(map);
+
+        /*
         Map<Integer, Integer> coinReturn = new HashMap<>();
         int quarters = 0, dimes = 0, nickels = 0;
 
@@ -77,13 +91,14 @@ public class PayStationImpl implements PayStation {
             coinReturn.put(5, nickels);
             insertedSoFar -= 5;
         }
-
+         */
         reset();
         return coinReturn;
     }
 
     private void reset() {
         timeBought = insertedSoFar = 0;
+        map.clear();
     }
 
     @Override
