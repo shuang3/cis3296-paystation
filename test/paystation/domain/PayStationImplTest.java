@@ -23,7 +23,7 @@ public class PayStationImplTest {
 
     @Before
     public void setup() {
-        ps = new PayStationImpl();
+        ps = new PayStationImpl(new LinearRateStrategy());
     }
 
     /**
@@ -143,7 +143,6 @@ public class PayStationImplTest {
 
     //Lab3: new tests being added
     //total of 8 new tests added
-    
     @Test //call to empty returns the total amount entered
     public void emptyReturnsTotal() throws IllegalCoinException {
         ps.addPayment(5);

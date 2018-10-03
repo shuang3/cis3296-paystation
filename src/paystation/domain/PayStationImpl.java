@@ -28,6 +28,13 @@ public class PayStationImpl implements PayStation {
 
     private HashMap map = new HashMap();
 
+    //strategy for rate calculations
+    private RateStrategy rateStrategy;
+
+    public PayStationImpl(RateStrategy rs) {
+        rateStrategy = rs;
+    }
+
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
@@ -50,7 +57,8 @@ public class PayStationImpl implements PayStation {
         }
         map.put(c, n);
         insertedSoFar += coinValue;
-        timeBought = insertedSoFar / 5 * 2;
+        //timeBought = insertedSoFar / 5 * 2;
+        timeBought = rateStrategy.calculateTime(insertedSoFar);
     }
 
     @Override
