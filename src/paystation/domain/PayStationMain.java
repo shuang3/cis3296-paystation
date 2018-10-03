@@ -5,6 +5,7 @@
  */
 package paystation.domain;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -103,7 +104,7 @@ public class PayStationMain {
                             break;
                         case 3:
                             System.out.println("You've choosen Alternating Rate");
-                            //ps = new PayStationImpl(new AlternatingRateStrategy());
+                            ps = new PayStationImpl(new AlternatingRateStrategy());
                             break;
                     }
                     break;
@@ -114,7 +115,6 @@ public class PayStationMain {
                     System.out.println("Invalid choice, try again.");
                     break;
             }
-            System.out.println("");
             System.out.println("");
         }
     }

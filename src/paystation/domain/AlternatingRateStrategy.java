@@ -5,23 +5,29 @@
  */
 package paystation.domain;
 
+import java.util.Calendar;
+
 /**
  *
  * @author Annie
  */
 public class AlternatingRateStrategy implements RateStrategy{
     
-    CalendarBasedStrategy strat;
+    CalendarBasedStrategy strat = new CalendarBasedStrategy();
     
-    public AlternatingRateStrategy(){
+    /*public AlternatingRateStrategy(){
         strat = new CalendarBasedStrategy();
-    }
+    }*/
     
     @Override
     public int calculateTime(int insertedSoFar){
+        System.out.println("RateStrategy: Alternating");
+        /*System.out.println("Hardwiring weekend");
+        strat.decision_cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        (testing purposes- comparing alt strat to progressive strat)
+        */
         if (strat.isWeekend()){
              int time = 0;
-        System.out.println("RateStrategy: Progressive");
         //1hr
         if (insertedSoFar <= 150) {
             time = (insertedSoFar / 5) * 2;
@@ -36,7 +42,6 @@ public class AlternatingRateStrategy implements RateStrategy{
         }
         return time;
         }else{
-            System.out.println("RateStrategy: Linear");
         return (insertedSoFar / 5) * 2;
         }
     }
