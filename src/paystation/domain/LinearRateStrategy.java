@@ -16,7 +16,7 @@ public class LinearRateStrategy implements RateStrategy {
     //25 & 10 cents = 14 minutes
     @Override
     public int calculateTime(int insertedSoFar) {
-        System.out.println("RateStrategy: Linear");
+        System.out.println("Current RateStrategy: Linear");
         return (insertedSoFar / 5) * 2;
     }
 }

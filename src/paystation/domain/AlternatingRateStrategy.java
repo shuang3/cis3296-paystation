@@ -21,11 +21,11 @@ public class AlternatingRateStrategy implements RateStrategy{
     
     @Override
     public int calculateTime(int insertedSoFar){
-        System.out.println("RateStrategy: Alternating");
-        /*System.out.println("Hardwiring weekend");
-        strat.decision_cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        (testing purposes- comparing alt strat to progressive strat)
-        */
+        System.out.println("Current RateStrategy: Alternating");
+        //System.out.println("Hardwiring weekend");
+        //strat.decision_cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        //(testing purposes- comparing alt strat to progressive strat)
+        
         if (strat.isWeekend()){
              int time = 0;
         //1hr

@@ -45,6 +45,18 @@ public class PayStationMain {
                         System.out.print("How much do you want to deposit? ");
                         int deposit = kb.nextInt();
                         ps.addPayment(deposit);
+                        System.out.print("Do you want to deposit more? Press 1 for yes, 2 for no: ");
+                        int next = kb.nextInt();
+                        while (next > 0 || next < 2) {
+                            System.out.print("How much do you want to deposit? ");
+                            int deposit2 = kb.nextInt();
+                            ps.addPayment(deposit2);
+                            System.out.print("Do you want to deposit more? Press 1 for yes, 2 for no: ");
+                            int next2 = kb.nextInt();
+                            if (next2 != 1) {
+                                break;
+                            }
+                        }
                     } catch (IllegalCoinException e) {
                         System.out.println("Invalid coin type. "
                                 + "Please enter 5, 10, or 25 cents.");
