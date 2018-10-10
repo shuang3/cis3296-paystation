@@ -10,7 +10,7 @@ package paystation.domain;
  * @author Annie
  */
 public interface RateStrategy {
-
+    
     //calculate the parking time
     public int calculateTime(int insertedSoFar);
 }

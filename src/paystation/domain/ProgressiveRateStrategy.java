@@ -17,7 +17,7 @@ public class ProgressiveRateStrategy implements RateStrategy {
     @Override
     public int calculateTime(int insertedSoFar) {
         int time = 0;
-        System.out.println("RateStrategy: Progressive");
+        System.out.println("Current RateStrategy: Progressive");
         //1hr
         if (insertedSoFar <= 150) {
             time = (insertedSoFar / 5) * 2;

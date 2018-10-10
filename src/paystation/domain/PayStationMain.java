@@ -5,6 +5,7 @@
  */
 package paystation.domain;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -31,32 +32,42 @@ public class PayStationMain {
                 + "\t6) Quit";
 
         Scanner kb = new Scanner(System.in);
-        int choices = 0;
+        String choices;
 
-        while (choices != 6) {
+        do{
             System.out.println(menu);
             System.out.print("Please select a choice: ");
-            choices = kb.nextInt();
+            choices = kb.next();
 
             switch (choices) {
-                case 1:
+                case "1":
                     try {
                         System.out.print("How much do you want to deposit? ");
                         int deposit = kb.nextInt();
                         ps.addPayment(deposit);
+                        System.out.print("Do you want to deposit more? Press 1 for yes, 2 for no: ");
+                        int next = kb.nextInt();
+                        while (next > 0 && next != 2) {
+                            System.out.print("How much do you want to deposit? ");
+                            int deposit2 = kb.nextInt();
+                            ps.addPayment(deposit2);
+                            System.out.print("Do you want to deposit more? Press 1 for yes, 2 for no: ");
+                            next = kb.nextInt();
+                           
+                        }
                     } catch (IllegalCoinException e) {
                         System.out.println("Invalid coin type. "
                                 + "Please enter 5, 10, or 25 cents.");
                     }
                     break;
-                case 2:
+                case "2":
                     System.out.println("Time bought so far: " + ps.readDisplay() + " minutes");
                     break;
-                case 3:
+                case "3":
                     Receipt receipt = ps.buy();
                     System.out.println("Thank you for your purchase. Here is your receipt: " + receipt.value() + " minutes purchased.");
                     break;
-                case 4:
+                case "4":
                     System.out.println("Canceling the current transaction... ");
                     Map map = ps.cancel();
                     int quarters = 0;
@@ -80,7 +91,7 @@ public class PayStationMain {
                     System.out.printf("Here's the returned coins: %d Quarters | %d Dimes | %d Nickels\n",
                             quarters, dimes, nickels);
                     break;
-                case 5:
+                case "5":
                     System.out.println("Rate Strategies:");
                     System.out.println("\t1) Linear Rate Strategy");
                     System.out.println("\t2) Progressive Rate Strategy");
@@ -95,19 +106,26 @@ public class PayStationMain {
                     switch (strategy) {
                         case 1:
                             System.out.println("You've choosen Linear Rate");
+                            int insert = ps.getInsertedSoFar();
                             ps = new PayStationImpl(new LinearRateStrategy());
+                            ps.setInsertedSoFar(insert);
                             break;
                         case 2:
                             System.out.println("You've choosen Progressive Rate");
+                            insert = ps.getInsertedSoFar();
                             ps = new PayStationImpl(new ProgressiveRateStrategy());
+                            ps.setInsertedSoFar(insert);
+                            System.out.println("Inserted so far: "+ps.getInsertedSoFar()+" cents");
                             break;
                         case 3:
                             System.out.println("You've choosen Alternating Rate");
-                            //ps = new PayStationImpl(new AlternatingRateStrategy());
+                            insert = ps.getInsertedSoFar();
+                            ps = new PayStationImpl(new AlternatingRateStrategy());
+                            ps.setInsertedSoFar(insert);
                             break;
                     }
                     break;
-                case 6:
+                case "6":
                     System.out.println("Thank you for using the PayStation, see you next time~");
                     break;
                 default:
@@ -115,6 +133,6 @@ public class PayStationMain {
                     break;
             }
             System.out.println("");
-        }
+        }while (!choices.equals("6")); 
     }
 }

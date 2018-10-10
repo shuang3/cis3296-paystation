@@ -58,11 +58,12 @@ public class PayStationImpl implements PayStation {
         map.put(c, n);
         insertedSoFar += coinValue;
         //timeBought = insertedSoFar / 5 * 2;
-        timeBought = rateStrategy.calculateTime(insertedSoFar);
+       // timeBought = rateStrategy.calculateTime(insertedSoFar);
     }
 
     @Override
     public int readDisplay() {
+        timeBought = rateStrategy.calculateTime(insertedSoFar);
         return timeBought;
     }
 
@@ -116,5 +117,26 @@ public class PayStationImpl implements PayStation {
         int total = totalMoney;
         totalMoney = 0;
         return total;
+    }
+    
+    public int getInsertedSoFar(){
+        return this.insertedSoFar;
+    }
+    public void setInsertedSoFar(int cents){
+        this.insertedSoFar = cents;
+    }
+    
+    public int getTotalMoney(){
+        return this.totalMoney;
+    }
+    
+    public int getTimeBought(){
+        return this.timeBought;
+    }
+    public void setTotalMoney(int tot){
+        this.totalMoney = tot;
+    }
+    public void setTimeBought(int time){
+        this.timeBought = time;
     }
 }
